@@ -106,26 +106,23 @@ export const ClientInstanceCard = ({
         </CardHeader>
 
         <CardContent>
-          <div className="flex items-center gap-3">
+          <div className="grid grid-cols-2 items-center gap-1">
             {instanceType === 'Whatsapp' && (<>
-              <Avatar className="rounded-lg">
-                {profilePicUrl && <AvatarImage src={profilePicUrl} alt={intanceName ?? ''} />}
-                <AvatarFallback className="rounded-lg">{userInitial}</AvatarFallback>
-              </Avatar>
+              <div className="flex items-center gap-3">
+                <Avatar className="rounded-lg">
+                  {profilePicUrl && <AvatarImage src={profilePicUrl} alt={intanceName ?? ''} />}
+                  <AvatarFallback className="rounded-lg">{userInitial}</AvatarFallback>
+                </Avatar>
+                {profileName
+                  ? <span className="text-base font-semibold truncate">{profileName}</span>
+                  : <Skeleton className="h-4 w-[100px]" />
+                }
+              </div>
               <div>
-                {profileName ? (
-                  <>
-                    <div className="text-sm font-medium">{profileName}</div>
-                    <div className="text-xs text-muted-foreground">
-                      +{ownerJid?.split('@')[0]}
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <Skeleton className="h-4 w-[120px] mb-1" />
-                    <Skeleton className="h-3 w-[100px]" />
-                  </>
-                )}
+                {profileName
+                  ? <span className="text-base font-semibold text-muted-foreground">+{ownerJid?.split('@')[0]}</span>
+                  : <Skeleton className="h-4 w-[100px]" />
+                }
               </div>
             </>
             )}
