@@ -372,13 +372,13 @@ export const UserInformation = ({ userId, countries, instancesData }: UserInform
                                 <Card className="border-border flex flex-1 flex-col">
                                     <CardContent className="pt-4 flex flex-col flex-1 gap-4">
                                         <CardLabel icon={Zap}>Proveedor de IA</CardLabel>
-                                        <div className="text-xs text-muted-foreground space-y-2">
+                                        <div className="text-xs text-muted-foreground">
                                             <p>Obtén tu API key en el portal de tu proveedor. Para OpenAI:</p>
                                             <a
                                                 href="https://platform.openai.com/api-keys"
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="cursor-pointer underline underline-offset-2 hover:text-foreground transition-colors block"
+                                                className="mt-4 text-sm text-blue-500 hover:text-blue-600 underline underline-offset-2 transition-colors block"
                                             >
                                                 👉 platform.openai.com/api-keys
                                             </a>
