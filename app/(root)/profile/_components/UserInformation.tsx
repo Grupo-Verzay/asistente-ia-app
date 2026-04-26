@@ -257,10 +257,6 @@ export const UserInformation = ({ userId, countries, instancesData }: UserInform
     // Tab definitions — reseller tab appears only for resellers
     const tabs = [
         { value: 'conexion', label: 'Conexión', icon: Wifi },
-        { value: 'integraciones', label: 'Integraciones', icon: Zap },
-        { value: 'preferencias', label: 'Preferencias', icon: Settings2 },
-        { value: 'comportamiento', label: 'Comportamiento', icon: Timer },
-        { value: 'seguridad', label: 'Seguridad', icon: ShieldCheck },
         ...(isReseller ? [{ value: 'apariencia', label: 'Apariencia', icon: Palette }] : []),
     ];
 
@@ -298,13 +294,12 @@ export const UserInformation = ({ userId, countries, instancesData }: UserInform
                         <div className="flex-1 min-w-0">
                             <div className="flex flex-wrap items-center gap-2">
                                 <span className="font-semibold text-sm sm:text-base truncate">
-                                    {user.name ?? 'Sin nombre'}
+                                    {user.company ?? user.name ?? 'Sin nombre'}
                                 </span>
                                 <Badge variant="secondary" className="text-xs shrink-0">
                                     {ROLE_LABELS[user.role] ?? user.role}
                                 </Badge>
                             </div>
-                            <p className="text-xs sm:text-sm text-muted-foreground truncate">{user.email}</p>
                         </div>
 
                         {/* Status pill */}
@@ -324,26 +319,28 @@ export const UserInformation = ({ userId, countries, instancesData }: UserInform
                 className="flex flex-col flex-1 min-h-0"
                 onValueChange={setActiveTab}
             >
-                {/* Tab nav */}
-                <TabsList className="w-full h-auto bg-transparent p-0 rounded-none border-b border-border justify-start gap-0 shrink-0 overflow-x-auto">
-                    {tabs.map(({ value, label, icon: Icon }) => (
-                        <TabsTrigger
-                            key={value}
-                            value={value}
-                            className="
-                                relative flex items-center gap-1.5 px-3 py-2.5 h-auto text-xs sm:text-sm
-                                font-medium rounded-none border-b-2 border-transparent -mb-px
-                                text-muted-foreground bg-transparent shadow-none
-                                data-[state=active]:border-primary data-[state=active]:text-foreground
-                                data-[state=active]:bg-primary/10 data-[state=active]:shadow-none
-                                hover:text-foreground hover:bg-muted/50 transition-colors whitespace-nowrap
-                            "
-                        >
-                            <Icon className="w-4 h-4 shrink-0" />
-                            <span className="hidden sm:inline">{label}</span>
-                        </TabsTrigger>
-                    ))}
-                </TabsList>
+                {/* Tab nav — solo visible si hay más de un tab */}
+                {tabs.length > 1 && (
+                    <TabsList className="w-full h-auto bg-transparent p-0 rounded-none border-b border-border justify-start gap-0 shrink-0 overflow-x-auto">
+                        {tabs.map(({ value, label, icon: Icon }) => (
+                            <TabsTrigger
+                                key={value}
+                                value={value}
+                                className="
+                                    relative flex items-center gap-1.5 px-3 py-2.5 h-auto text-xs sm:text-sm
+                                    font-medium rounded-none border-b-2 border-transparent -mb-px
+                                    text-muted-foreground bg-transparent shadow-none
+                                    data-[state=active]:border-primary data-[state=active]:text-foreground
+                                    data-[state=active]:bg-primary/10 data-[state=active]:shadow-none
+                                    hover:text-foreground hover:bg-muted/50 transition-colors whitespace-nowrap
+                                "
+                            >
+                                <Icon className="w-4 h-4 shrink-0" />
+                                <span className="hidden sm:inline">{label}</span>
+                            </TabsTrigger>
+                        ))}
+                    </TabsList>
+                )}
 
                 {/* Active tab breadcrumb — visible only on mobile where labels are hidden */}
                 {(() => {
@@ -364,7 +361,6 @@ export const UserInformation = ({ userId, countries, instancesData }: UserInform
                     {/* ── Tab: Conexión ─────────────────────────── */}
                     <TabsContent value="conexion" className="absolute inset-0 mt-0 data-[state=inactive]:pointer-events-none">
                         <TabPanel>
-                            <SectionTitle>Canal de comunicación</SectionTitle>
                             <div className="flex flex-col lg:flex-row gap-2">
                                 <ConnectionMain
                                     user={user}
@@ -373,59 +369,25 @@ export const UserInformation = ({ userId, countries, instancesData }: UserInform
                                     instanceType={"Whatsapp"}
                                     prompts={instancesData["Whatsapp"].prompts}
                                 />
-                                {/* Instagram no está en uso actualmente */}
-                                {/* <ConnectionMain
-                                user={user}
-                                instance={instancesData["Instagram"].instance}
-                                instanceInfo={instancesData["Instagram"].info}
-                                instanceType={"Instagram"}
-                                prompts={instancesData["Instagram"].prompts}
-                            /> */}
-
-                                {/* Estado del agente */}
                                 <Card className="border-border flex flex-1 flex-col">
-                                    <CardContent className="pt-4 flex flex-col flex-1 gap-4">
-                                        <CardLabel icon={isMuted ? BotOff : Bot}>Estado del agente</CardLabel>
-                                        <div className="flex-1 flex flex-col justify-between gap-3">
-                                            <p className="text-xs text-muted-foreground">
-                                                {isMuted
-                                                    ? "El bot no enviará respuestas automáticas a tus contactos."
-                                                    : "El bot responde automáticamente a tus contactos."}
-                                            </p>
-                                            <div className="flex items-center justify-between">
-                                                <Button
-                                                variant={"outline"}
-                                                    className={`text-xs ${!isMuted ? "text-green-600 border-green-600 dark:text-green-400 dark:border-green-400" : ""}`}
-                                                >
-                                                    {isMuted ? "Silenciado" : "Activo"}
-                                                </Button>
-                                                {/* <Badge
-                                                    variant={isMuted ? "destructive" : "outline"}
-                                                    className={`text-xs ${!isMuted ? "text-green-600 border-green-600 dark:text-green-400 dark:border-green-400" : ""}`}
-                                                >
-                                                    {isMuted ? "Silenciado" : "Activo"}
-                                                </Badge> */}
-                                                <Switch checked={!isMuted} onCheckedChange={(v) => handleMuteToggle(!v)} />
-                                            </div>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            </div>
-                        </TabPanel>
-                    </TabsContent>
-
-                    {/* ── Tab: Integraciones ────────────────────── */}
-                    <TabsContent value="integraciones" className="absolute inset-0 mt-0 data-[state=inactive]:pointer-events-none">
-                        <TabPanel>
-                            <div className="grid gap-4 lg:grid-cols-2">
-                                <Card className="border-border flex flex-col">
                                     <CardContent className="pt-4 flex flex-col flex-1 gap-4">
                                         <CardLabel icon={Zap}>Proveedor de IA</CardLabel>
                                         <ApiKeyConfigurator userId={userId} onSaved={() => { }} />
                                     </CardContent>
                                 </Card>
+                            </div>
 
-                                <Card className="border-border flex flex-col">
+                            {/* ── Preferencias ────────────────────── */}
+                            <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 mt-4">
+                                <Card className="border-border flex flex-1 flex-col">
+                                    <CardContent className="pt-4 flex flex-col flex-1 gap-4">
+                                        <CardLabel icon={Globe}>Zona horaria</CardLabel>
+                                        <FieldGroup label="Región">
+                                            <TimezoneCombobox value={timezone} onChange={handleTimezoneChange} />
+                                        </FieldGroup>
+                                    </CardContent>
+                                </Card>
+                                <Card className="border-border flex flex-1 flex-col">
                                     <CardContent className="pt-4 flex flex-col flex-1 gap-4">
                                         <NotificationContactsManager
                                             userId={userId}
@@ -434,52 +396,8 @@ export const UserInformation = ({ userId, countries, instancesData }: UserInform
                                     </CardContent>
                                 </Card>
                             </div>
-                        </TabPanel>
-                    </TabsContent>
 
-                    {/* ── Tab: Preferencias ────────────────────── */}
-                    <TabsContent value="preferencias" className="absolute inset-0 mt-0 data-[state=inactive]:pointer-events-none">
-                        <TabPanel>
-                            <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
-                                {/* Zona horaria */}
-                                <Card className="border-border flex flex-1 flex-col">
-                                    <CardContent className="pt-4 flex flex-col flex-1 gap-4">
-                                        <CardLabel icon={Globe}>Zona horaria</CardLabel>
-                                        <FieldGroup
-                                            label="Región"
-                                        >
-                                            <TimezoneCombobox value={timezone} onChange={handleTimezoneChange} />
-                                        </FieldGroup>
-                                    </CardContent>
-                                </Card>
-
-                                {/* Empresa */}
-                                <Card className="border-border flex flex-1 flex-col">
-                                    <CardContent className="pt-4 flex flex-col flex-1 gap-4">
-                                        <CardLabel icon={Building2}>Empresa</CardLabel>
-                                        <FieldGroup
-                                            label="Nombre de empresa"
-                                            loading={loadingField === "company"}
-                                        >
-                                            <Input
-                                                id="company"
-                                                name="company"
-                                                placeholder="Acme Corp."
-                                                value={(user.company as string) ?? ""}
-                                                disabled={loadingField === "company"}
-                                                onChange={(e) => handleChange("company", e.target.value)}
-                                                onBlur={() => handleBlur("company")}
-                                            />
-                                        </FieldGroup>
-                                    </CardContent>
-                                </Card>
-                            </div>
-                        </TabPanel>
-                    </TabsContent>
-
-                    {/* ── Tab: Comportamiento ───────────────────── */}
-                    <TabsContent value="comportamiento" className="absolute inset-0 mt-0 data-[state=inactive]:pointer-events-none">
-                        <TabPanel>
+                            {/* ── Comportamiento ──────────────────── */}
                             <SectionTitle>Tiempos de respuesta</SectionTitle>
                             <div className="grid gap-4 sm:grid-cols-2">
                                 <Card className="border-border">
@@ -503,7 +421,6 @@ export const UserInformation = ({ userId, countries, instancesData }: UserInform
                                         </FieldGroup>
                                     </CardContent>
                                 </Card>
-
                                 <Card className="border-border">
                                     <CardContent className="pt-4">
                                         <FieldGroup
@@ -549,7 +466,6 @@ export const UserInformation = ({ userId, countries, instancesData }: UserInform
                                         </FieldGroup>
                                     </CardContent>
                                 </Card>
-
                                 <Card className="border-border">
                                     <CardContent className="pt-4">
                                         <FieldGroup
