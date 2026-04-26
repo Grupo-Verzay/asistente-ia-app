@@ -372,7 +372,20 @@ export const UserInformation = ({ userId, countries, instancesData }: UserInform
                                 <Card className="border-border flex flex-1 flex-col">
                                     <CardContent className="pt-4 flex flex-col flex-1 gap-4">
                                         <CardLabel icon={Zap}>Proveedor de IA</CardLabel>
-                                        <ApiKeyConfigurator userId={userId} onSaved={() => { }} />
+                                        <div className="text-xs text-muted-foreground space-y-2">
+                                            <p>Obtén tu API key en el portal de tu proveedor. Para OpenAI:</p>
+                                            <a
+                                                href="https://platform.openai.com/api-keys"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="cursor-pointer underline underline-offset-2 hover:text-foreground transition-colors block"
+                                            >
+                                                👉 platform.openai.com/api-keys
+                                            </a>
+                                        </div>
+                                        <div className="mt-auto">
+                                            <ApiKeyConfigurator userId={userId} onSaved={() => { }} />
+                                        </div>
                                     </CardContent>
                                 </Card>
                             </div>

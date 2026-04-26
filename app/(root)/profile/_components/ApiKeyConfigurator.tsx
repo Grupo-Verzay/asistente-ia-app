@@ -233,8 +233,6 @@ export function ApiKeyConfigurator({
 
     return (
         <div className="space-y-2">
-            <Label className="text-muted-foreground">{label}</Label>
-
             {/* Input de previsualización (no editable) */}
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
@@ -268,129 +266,25 @@ export function ApiKeyConfigurator({
                     <DialogHeader>
                         <DialogTitle>Configurar proveedor y modelo</DialogTitle>
                         <DialogDescription>
-                            Guarda la API key por <span className="font-medium">proveedor</span> y define el{" "}
-                            <span className="font-medium">proveedor/modelo por defecto</span> del usuario.
+                            Guarda la API key por proveedor de OpenAI.
                         </DialogDescription>
                     </DialogHeader>
 
                     <form onSubmit={form.handleSubmit(submit)} className="grid gap-4 py-2">
-                        {/* Provider */}
+                        {/* Provider — estático */}
                         <div className="grid gap-2">
                             <Label>Proveedor</Label>
-                            <Popover open={providerOpen} onOpenChange={setProviderOpen}>
-                                <PopoverTrigger asChild>
-                                    <Button
-                                        type="button"
-                                        variant="outline"
-                                        role="combobox"
-                                        aria-expanded={providerOpen}
-                                        className="justify-between"
-                                        disabled={loading}
-                                    >
-                                        {providerLabel}
-                                        <ChevronsUpDown className="ml-2 h-4 w-4 opacity-60" />
-                                    </Button>
-                                </PopoverTrigger>
-                                <PopoverContent className="p-0 w-[--radix-popover-trigger-width]">
-                                    <Command>
-                                        <CommandInput placeholder="Buscar proveedor..." />
-                                        <CommandList>
-                                            <CommandEmpty>Sin resultados</CommandEmpty>
-                                            <CommandGroup>
-                                                {providers.map((prov) => (
-                                                    <CommandItem
-                                                        key={prov.id}
-                                                        value={prov.id}
-                                                        onSelect={(val) => {
-                                                            form.setValue("providerId", val, {
-                                                                shouldValidate: true,
-                                                                shouldDirty: true,
-                                                            });
-                                                            setProviderOpen(false);
-                                                        }}
-                                                    >
-                                                        <Check
-                                                            className={cn(
-                                                                "mr-2 h-4 w-4",
-                                                                prov.id === form.getValues("providerId")
-                                                                    ? "opacity-100"
-                                                                    : "opacity-0"
-                                                            )}
-                                                        />
-                                                        {prov.name}
-                                                    </CommandItem>
-                                                ))}
-                                            </CommandGroup>
-                                        </CommandList>
-                                    </Command>
-                                </PopoverContent>
-                            </Popover>
-                            {form.formState.errors.providerId && (
-                                <p className="text-xs text-destructive">
-                                    {form.formState.errors.providerId.message}
-                                </p>
-                            )}
+                            <div className="px-3 py-2 rounded-md border border-border bg-muted text-sm text-muted-foreground">
+                                {providerLabel}
+                            </div>
                         </div>
 
-                        {/* Model */}
+                        {/* Model — estático */}
                         <div className="grid gap-2">
                             <Label>Modelo</Label>
-                            <Popover open={modelOpen} onOpenChange={setModelOpen}>
-                                <PopoverTrigger asChild>
-                                    <Button
-                                        type="button"
-                                        variant="outline"
-                                        role="combobox"
-                                        aria-expanded={modelOpen}
-                                        disabled={!form.getValues("providerId") || loading}
-                                        className={cn(
-                                            "justify-between",
-                                            !form.getValues("providerId") && "opacity-60"
-                                        )}
-                                    >
-                                        {modelLabel}
-                                        <ChevronsUpDown className="ml-2 h-4 w-4 opacity-60" />
-                                    </Button>
-                                </PopoverTrigger>
-                                <PopoverContent className="p-0 w-[--radix-popover-trigger-width]">
-                                    <Command>
-                                        <CommandInput placeholder="Buscar modelo..." />
-                                        <CommandList>
-                                            <CommandEmpty>Sin resultados</CommandEmpty>
-                                            <CommandGroup>
-                                                {modelsForProvider.map((m) => (
-                                                    <CommandItem
-                                                        key={m.id}
-                                                        value={m.id}
-                                                        onSelect={(val) => {
-                                                            form.setValue("modelId", val, {
-                                                                shouldValidate: true,
-                                                                shouldDirty: true,
-                                                            });
-                                                            setModelOpen(false);
-                                                        }}
-                                                    >
-                                                        <Check
-                                                            className={cn(
-                                                                "mr-2 h-4 w-4",
-                                                                m.id === form.getValues("modelId")
-                                                                    ? "opacity-100"
-                                                                    : "opacity-0"
-                                                            )}
-                                                        />
-                                                        {m.name}
-                                                    </CommandItem>
-                                                ))}
-                                            </CommandGroup>
-                                        </CommandList>
-                                    </Command>
-                                </PopoverContent>
-                            </Popover>
-                            {form.formState.errors.modelId && (
-                                <p className="text-xs text-destructive">
-                                    {form.formState.errors.modelId.message}
-                                </p>
-                            )}
+                            <div className="px-3 py-2 rounded-md border border-border bg-muted text-sm text-muted-foreground">
+                                {modelLabel}
+                            </div>
                         </div>
 
                         {/* API Key */}
@@ -408,47 +302,19 @@ export function ApiKeyConfigurator({
                                     {form.formState.errors.apiKey.message}
                                 </p>
                             )}
-                            <p className="text-xs text-muted-foreground">
-                                Seguridad: se guarda por proveedor en <code>UserAiConfig</code>.
-                            </p>
-                        </div>
-
-                        {/* Opciones por defecto */}
-                        <div className="grid gap-2">
-                            <div className="flex items-center space-x-2">
-                                <Checkbox
-                                    id="makeDefaultProvider"
-                                    checked={!!form.watch("makeDefaultProvider")}
-                                    onCheckedChange={(v) =>
-                                        form.setValue("makeDefaultProvider", Boolean(v), {
-                                            shouldDirty: true,
-                                            shouldValidate: true,
-                                        })
-                                    }
-                                    disabled={loading}
-                                />
-                                <Label htmlFor="makeDefaultProvider" className="cursor-pointer">
-                                    Usar este proveedor como <b>por defecto</b>
-                                </Label>
-                            </div>
-
-                            <div className="flex items-center space-x-2">
-                                <Checkbox
-                                    id="makeDefaultModel"
-                                    checked={!!form.watch("makeDefaultModel")}
-                                    onCheckedChange={(v) =>
-                                        form.setValue("makeDefaultModel", Boolean(v), {
-                                            shouldDirty: true,
-                                            shouldValidate: true,
-                                        })
-                                    }
-                                    disabled={loading}
-                                />
-                                <Label htmlFor="makeDefaultModel" className="cursor-pointer">
-                                    Usar este modelo como <b>por defecto</b>
-                                </Label>
+                            <div className="text-sm text-muted-foreground space-y-4 pt-2">
+                                <p>Obtén tu API key en el portal de OpenAI:</p>
+                                <a
+                                    href="https://platform.openai.com/api-keys"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-base underline underline-offset-2 hover:text-foreground transition-colors block mt-4"
+                                >
+                                    👉 platform.openai.com/api-keys
+                                </a>
                             </div>
                         </div>
+
 
                         <DialogFooter className="mt-2">
                             <Button
