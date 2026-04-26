@@ -54,7 +54,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-const WELCOME_TITLE = "Inicio Bienvenida";
+const WELCOME_TITLE = "Bienvenida";
 
 /* utilidad: type-guard para pedidos */
 function isPedidoFn(el: ElementItem): el is PedidoFunctionEl {
@@ -259,7 +259,7 @@ export function TrainingBuilder({
         {
           id: newId,
           title: WELCOME_TITLE,
-          mainMessage: `Al iniciar un chat, la *Prioridad:* es analizar si el *chat es nuevo* para seguir el *orden exacto* definido, *sin omitir ninguna*. en WhatsApp para recopilar información clave antes de atender otras consultas.\n\nCuando un *Usuario:* inicie la conversación con frases como:\n> Hola / Buenos días / Buenas tardes / Buenas noches / Información / Precio / Me interesa / Etc.\n* *Enviar mensaje de Bienvenida:*\nTu único mensaje de bienvenida es:`,
+          mainMessage: `**CONDICIÓN DE CHAT NUEVO:** \`collected == {} AND current_step == 1\`\n**PRIORIDAD ABSOLUTA — PRIMER TURNO. Se ejecuta ante cualquier mensaje que no tenga ninguna intención clara del usuario.** (Saludos)\n**OBLIGATORIO: responder directamente 'REGLA/PARÁMETRO' ANTES de responder. Sin excepción.**\n**PROHIBIDO: responder sin ejecutar, reformular, inventar texto o enviar más de un mensaje.**\n**SALIDA LITERAL: Emitir ÚNICAMENTE el texto exacto de la Regla/parámetro (1). Esperar respuesta.**`,
           elements: [{ id: nanoid(), kind: "text", text: "" }],
           openPicker: false,
         },
