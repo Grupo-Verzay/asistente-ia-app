@@ -711,5 +711,5 @@ export async function getUserAppointmentUrl() {
   const user = await currentUser(); // lee de sesión/cache, no del cliente
 
 
-  return `https://agente.ia-app.com/schedule/${user.id}`
+  return `https://asistente.ia-app.com/schedule/${user.id}`
 }

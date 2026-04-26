@@ -39,7 +39,7 @@ export const buildStatusOwnerMessage = ({
     const serviceName = appointment.service?.name ?? "—";
     const clientName = appointment.session?.pushName ?? "Cliente";
 
-    const scheduleUrl = userId === "cm84mjtp50000l6soenaosi2z" ? 'https://verzay.com/agendar-una-cita' : `https://agente.ia-app.com/schedule/${userId}`;
+    const scheduleUrl = userId === "cm84mjtp50000l6soenaosi2z" ? 'https://verzay.com/agendar-una-cita' : `https://asistente.ia-app.com/schedule/${userId}`;
 
     // Motivo opcional (útil en cancelación, pero funciona en cualquier estado)
     const reasonBlock = opts?.reason ? `\n\n📝 Motivo: ${opts.reason}` : "";

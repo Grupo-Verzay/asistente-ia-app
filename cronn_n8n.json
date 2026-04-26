@@ -23,7 +23,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://agente.ia-app.com/api/cron/billing",
+        "url": "https://asistente.ia-app.com/api/cron/billing",
         "authentication": "none",
         "sendHeaders": true,
         "headerParameters": {

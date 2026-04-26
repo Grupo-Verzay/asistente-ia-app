@@ -29,5 +29,5 @@ export function decodeApiKeyRef(ref: string): string | null {
 
 /** Builds a full registration URL for a given encoded ref token. */
 export function buildRegisterUrl(ref: string): string {
-  return `https://agente.ia-app.com/register?ref=${ref}`;
+  return `https://asistente.ia-app.com/register?ref=${ref}`;
 }

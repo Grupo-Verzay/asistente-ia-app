@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const ShareScheduleLinkButton = ({ userId }: Props) => {
-    const baseUrl = "https://agente.ia-app.com/schedule";
+    const baseUrl = "https://asistente.ia-app.com/schedule";
     const scheduleUrl = `${baseUrl}/${userId}`;
     const [copied, setCopied] = useState(false);
 

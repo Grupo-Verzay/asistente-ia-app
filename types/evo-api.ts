@@ -4,7 +4,7 @@ import { SERVER_TIME_ZONE } from "@/lib/utils";
 export const DISCONNECT_COOLDOWN_MS = 30 * 60 * 1000; // 30 min
 export const EVO_FETCH_TIMEOUT_MS = 12_000; // timeout para detectar "no responde"
 
-export const DISCONNECTION_MSG = `📵 Se *desvinculó* su WhatsApp del Agente.\n\n*Solución*: entre a su cuenta\n\n👉 agente.ia-app.com\n\n*Conectar* → en WhatsApp Business: Dispositivos vinculados.\n\n*Vincular un dispositivo* y escanee el *QR*  📳`
+export const DISCONNECTION_MSG = `📵 Se *desvinculó* su WhatsApp del Agente.\n\n*Solución*: entre a su cuenta\n\n👉 asistente.ia-app.com\n\n*Conectar* → en WhatsApp Business: Dispositivos vinculados.\n\n*Vincular un dispositivo* y escanee el *QR*  📳`
 
 export type EvoHealthCacheEntry = {
   lastIsConnected: boolean | null; // null = no hay historial
