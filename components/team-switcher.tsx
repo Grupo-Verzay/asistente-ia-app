@@ -69,7 +69,7 @@ export function TeamSwitcher({ user }: TeamSwitcherProps) {
                             <Link href="/" aria-label="Volver al inicio">
                                 <Image
                                     src="/assets/image/logo_app.png"
-                                    alt="Logo Verzay"
+                                    alt="Logo Asistente"
                                     width={32}
                                     height={32}
                                     className="rounded-lg object-cover"
@@ -80,7 +80,7 @@ export function TeamSwitcher({ user }: TeamSwitcherProps) {
 
                         <div className="grid flex-1 text-left leading-tight">
                             <span className="truncate font-semibold text-2xl">
-                                Verzay
+                                Asistente
                             </span>
                         </div>
                     </>
