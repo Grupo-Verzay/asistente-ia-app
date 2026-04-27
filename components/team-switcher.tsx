@@ -67,14 +67,7 @@ export function TeamSwitcher({ user }: TeamSwitcherProps) {
                     <>
                         <div className="flex aspect-square size-8 items-center justify-center rounded-lg mr-2 overflow-hidden">
                             <Link href="/" aria-label="Volver al inicio">
-                                <Image
-                                    src="/assets/image/logo_app.png"
-                                    alt="Logo Asistente"
-                                    width={32}
-                                    height={32}
-                                    className="rounded-lg object-cover"
-                                    priority
-                                />
+                                <span className="text-2xl leading-none">🤖</span>
                             </Link>
                         </div>
 

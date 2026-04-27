@@ -601,6 +601,14 @@ export async function resolveUserAiClient(userId: string): Promise<ActionResult<
 
     if (!cfg?.apiKey) return { success: false, message: "user_missing_active_apikey" };
 
+    const systemKey = process.env.SECRET_API_KEY;
+    if (systemKey && cfg.apiKey === systemKey) {
+      const trialEnd = new Date(u.createdAt.getTime() + 3 * 24 * 60 * 60 * 1000);
+      if (new Date() > trialEnd) {
+        return { success: false, message: "trial_expired_own_key_required" };
+      }
+    }
+
     const provider = await db.aiProvider.findUnique({
       where: { id: u.defaultProviderId },
       select: { name: true },
@@ -622,5 +630,45 @@ export async function resolveUserAiClient(userId: string): Promise<ActionResult<
     };
   } catch (e) {
     return { success: false, message: "resolve_ai_client_error" };
+  }
+}
+
+export type TrialStatusDTO = {
+  isUsingSystemKey: boolean;
+  trialExpired: boolean;
+  daysRemaining: number;
+  hasOwnKey: boolean;
+};
+
+export async function getUserAiTrialStatus(userId: string): Promise<ActionResult<TrialStatusDTO>> {
+  noStore();
+  try {
+    const u = await ensureUser(userId);
+    const systemKey = process.env.SECRET_API_KEY;
+
+    const cfg = u.defaultProviderId
+      ? await db.userAiConfig.findFirst({
+          where: { userId, isActive: true, providerId: u.defaultProviderId },
+          select: { apiKey: true },
+        })
+      : null;
+
+    const isUsingSystemKey = !!(systemKey && cfg?.apiKey === systemKey);
+    const hasOwnKey = !!(cfg?.apiKey && !isUsingSystemKey);
+
+    const trialEnd = new Date(u.createdAt.getTime() + 3 * 24 * 60 * 60 * 1000);
+    const now = new Date();
+    const trialExpired = isUsingSystemKey && now > trialEnd;
+    const daysRemaining = isUsingSystemKey
+      ? Math.max(0, Math.ceil((trialEnd.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)))
+      : 0;
+
+    return {
+      success: true,
+      message: 'ok',
+      data: { isUsingSystemKey, trialExpired, daysRemaining, hasOwnKey },
+    };
+  } catch {
+    return { success: false, message: 'trial_status_error' };
   }
 }

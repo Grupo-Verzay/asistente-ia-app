@@ -35,8 +35,9 @@ import { cn } from "@/lib/utils";
 import { ChevronsUpDown, Check } from "lucide-react";
 
 // Server actions del CRUD (usa la ruta donde lo pegaste)
-import { upsertUserAiConfig, setUserDefaults, getUserAiSettings } from "@/actions/userAiconfig-actions";
+import { upsertUserAiConfig, setUserDefaults, getUserAiSettings, getUserAiTrialStatus, TrialStatusDTO } from "@/actions/userAiconfig-actions";
 import { useEffect, useState } from "react";
+import { AlertTriangle, Clock } from "lucide-react";
 import { keepOnlyOpenAIProvider } from "../helpers/keepOnlyOpenAIProvider";
 
 type ApiKeyConfiguratorProps = {
@@ -83,6 +84,7 @@ export function ApiKeyConfigurator({
     const [modelOpen, setModelOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [settings, setSettings] = useState<SettingsData | null>(null);
+    const [trialStatus, setTrialStatus] = useState<TrialStatusDTO | null>(null);
 
     // Estado de preview (fuera del diálogo)
     const [previewProviderId, setPreviewProviderId] = useState<string | null>(null);
@@ -104,8 +106,12 @@ export function ApiKeyConfigurator({
     useEffect(() => {
         (async () => {
             setLoading(true);
-            const res = await getUserAiSettings(userId);
+            const [res, trialRes] = await Promise.all([
+                getUserAiSettings(userId),
+                getUserAiTrialStatus(userId),
+            ]);
             setLoading(false);
+            if (trialRes?.success && trialRes.data) setTrialStatus(trialRes.data);
 
             if (!res?.success || !res.data) {
                 toast.error(res?.message || "No se pudieron cargar los proveedores");
@@ -231,33 +237,58 @@ export function ApiKeyConfigurator({
     const previewProviderLabel =
         providers.find((p) => p.id === previewProviderId)?.name || "Proveedor";
 
+    const trialExpired = trialStatus?.trialExpired ?? false;
+    const isLocked = disabled || trialExpired;
+
     return (
         <div className="space-y-2">
+            {/* Banner de trial */}
+            {trialStatus?.isUsingSystemKey && !trialStatus.trialExpired && (
+                <div className="flex items-center gap-2 rounded-md border border-yellow-400 bg-yellow-50 dark:bg-yellow-950 dark:border-yellow-700 px-3 py-2 text-sm text-yellow-800 dark:text-yellow-300">
+                    <Clock className="w-4 h-4 shrink-0" />
+                    <span>
+                        Estás usando la API key de prueba. Te {trialStatus.daysRemaining === 1 ? "queda" : "quedan"}{" "}
+                        <strong>{trialStatus.daysRemaining} {trialStatus.daysRemaining === 1 ? "día" : "días"}</strong> de prueba gratuita.
+                    </span>
+                </div>
+            )}
+            {trialStatus?.trialExpired && (
+                <div className="flex items-center gap-2 rounded-md border border-red-400 bg-red-50 dark:bg-red-950 dark:border-red-700 px-3 py-2 text-sm text-red-800 dark:text-red-300">
+                    <AlertTriangle className="w-4 h-4 shrink-0" />
+                    <span>
+                        Tu período de prueba gratuita ha vencido. Debes configurar tu propia API key para continuar usando el asistente.
+                    </span>
+                </div>
+            )}
+
             {/* Input de previsualización (no editable) */}
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
                     <div className="relative">
                         <Input
                             readOnly
-                            disabled={disabled || loading}
+                            disabled={isLocked || loading}
                             value={
-                                previewApiKey
-                                    ? `${previewProviderLabel}: ${maskKey(previewApiKey)}`
-                                    : `${previewProviderLabel}: No configurada`
+                                trialExpired
+                                    ? "API key de prueba vencida"
+                                    : previewApiKey
+                                        ? `${previewProviderLabel}: ${maskKey(previewApiKey)}`
+                                        : `${previewProviderLabel}: No configurada`
                             }
                             placeholder="No configurada"
                             className={cn(
                                 "pr-28 cursor-pointer bg-muted/40 border-border",
-                                (disabled || loading) && "cursor-not-allowed opacity-60"
+                                trialExpired && "border-red-400 text-red-600 dark:text-red-400",
+                                (isLocked || loading) && "cursor-not-allowed opacity-60"
                             )}
                         />
                         <Button
                             type="button"
-                            variant="secondary"
+                            variant={trialExpired ? "destructive" : "secondary"}
                             className="absolute right-1 top-1 h-8"
-                            disabled={disabled || loading}
+                            disabled={loading}
                         >
-                            Configurar
+                            {trialExpired ? "Requerida" : "Configurar"}
                         </Button>
                     </div>
                 </DialogTrigger>

@@ -11,9 +11,12 @@ import ErrorBoundary from "@/components/error-bundary";
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "700"] });
 
 export const metadata: Metadata = {
-  title: "Agente IA",
+  title: "Asistente IA",
   description: "La plataforma de inteligencia artificial que potencia y automatiza tu negocio.",
-  icons: { icon: "/favicon.ico" },
+  icons: {
+    icon: "/icon.png",
+    apple: "/apple-icon.png",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
