@@ -35,7 +35,12 @@
       "Bash(PRISMA_FORCE_COLOR=1 npx prisma db push)",
       "Read(//e/EMANUEL-DEV/Verzay/IERZAY/backend-api/api-webhook/src/modules/ai-agent/**)",
       "Bash(npm run *)",
-      "Bash(npx next *)"
+      "Bash(npx next *)",
+      "Bash(sed -i -e 's/NO EXISTE NINGUN FLUJO/NO EXISTE NINGUN DISPARADOR/g' -e 's/Click en botón para crear un nuevo Flujo/Click en botón para crear un nuevo Disparador/g' -e 's/CREA TU PRIMER FLUJO/CREA TU PRIMER DISPARADOR/g' 'app/\\(root\\)/flow/_components/UserWorkflows.tsx')",
+      "Bash(sed -i -e 's/entityLabel=\"Flujo\"/entityLabel=\"Disparador\"/g' 'app/\\(root\\)/flow/_components/WorkflowAction.tsx')",
+      "Bash(sed -i -e 's/Solo puedes agregar hasta 20 palabras clave por flujo/Solo puedes agregar hasta 20 palabras clave por disparador/g' -e 's/Flujo actualizado correctamente/Disparador actualizado correctamente/g' -e 's/Error al actualizar el flujo/Error al actualizar el disparador/g' -e 's/Nombre del flujo/Nombre del disparador/g' -e 's/disparen este flujo\\\\./disparen este disparador./g' 'app/\\(root\\)/flow/_components/WorkflowCard.tsx')",
+      "Bash(sed -i -e 's/Flujo y datos eliminados correctamente/Disparador y datos eliminados correctamente/g' -e 's/Error crítico al eliminar flujo:/Error crítico al eliminar disparador:/g' -e 's/Error inesperado al intentar eliminar el flujo\\\\./Error inesperado al intentar eliminar el disparador./g' -e 's/⏳ Eliminando flujo y archivos\\\\.\\\\.\\\\./⏳ Eliminando disparador y archivos.../g' -e 's/todos los nodos y archivos<\\\\/strong> del flujo\\\\./todos los nodos y archivos<\\\\/strong> del disparador./g' -e 's/Escribe el nombre del flujo/Escribe el nombre del disparador/g' 'app/\\(root\\)/flow/_components/DeleteWorkflowDialog.tsx')",
+      "Bash(sed -i -e 's/Este flujo ya alcanzó el límite/Este disparador ya alcanzó el límite/g' -e 's/Este flujo ya tiene el máximo/Este disparador ya tiene el máximo/g' 'app/\\(root\\)/flow/[workflowId]/_components/CrateNodeComponent.tsx')"
     ],
     "additionalDirectories": [
       "C:\\Users\\home\\.claude",

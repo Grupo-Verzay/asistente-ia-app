@@ -39,10 +39,10 @@ export async function UserWorkflows({ userId, isPro }: UserWorkflowsProps) {
                     <InboxIcon size={40} className='stroke-primary' />
                 </div>
                 <div className='flex flex-col gap-1 text-center'>
-                    <p className="font-bold">NO EXISTE NINGUN FLUJO</p>
-                    <p className="text-sm text-muted-foreground">Click en botón para crear un nuevo Flujo</p>
+                    <p className="font-bold">NO EXISTE NINGUN DISPARADOR</p>
+                    <p className="text-sm text-muted-foreground">Click en botón para crear un nuevo Disparador</p>
                 </div>
-                <CreateWorflowDialog triggerText="CREA TU PRIMER FLUJO" isPro={isPro} />
+                <CreateWorflowDialog triggerText="CREA TU PRIMER DISPARADOR" isPro={isPro} />
             </div>
         );
     }

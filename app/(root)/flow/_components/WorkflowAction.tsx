@@ -38,7 +38,7 @@ export const WorkflowAction = ({ workflowId, userId }: { workflowId: string; use
                     setOpen={setShowDeleteDialog}
                     itemId={workflowId}
                     mutationFn={() => deleteEntireWorkflow(userId, workflowId)}
-                    entityLabel="Flujo"
+                    entityLabel="Disparador"
                 />
             )}
 

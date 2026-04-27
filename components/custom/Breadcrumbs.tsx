@@ -32,7 +32,7 @@ import { Button } from '../ui/button';
 import ThemeSwitcher from './ThemeSwitcher';
 
 export const breadcrumbLabels: Record<string, string> = {
-  flow: 'flujo',
+  flow: 'Disparadores',
   profile: 'perfil',
   sessions: 'Leads',
   credits: 'planes',

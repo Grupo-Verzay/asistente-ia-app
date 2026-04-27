@@ -30,7 +30,7 @@ const FlowPage = async () => {
       <div className="sticky top-0 z-1 mb-6">
         <div className="flex justify-between items-center">
           <Header
-            title={'Flujos básicos'}
+            title={'Disparadores'}
           />
           <CreateWorflowDialog isPro={false} />
         </div>

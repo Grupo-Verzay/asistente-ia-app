@@ -46,21 +46,21 @@ function DeleteWorkflowDialog({
         return;
       }
 
-      toast.success("Flujo y datos eliminados correctamente", { id: workflowId });
+      toast.success("Disparador y datos eliminados correctamente", { id: workflowId });
       setConfirmText("");
       setOpen(false);
       router.refresh();
     },
     onError: (error: any) => {
-      console.error("Error crítico al eliminar flujo:", error);
-      toast.error("Error inesperado al intentar eliminar el flujo.", {
+      console.error("Error crítico al eliminar disparador:", error);
+      toast.error("Error inesperado al intentar eliminar el disparador.", {
         id: workflowId,
       });
     },
   });
 
   const handleDelete = () => {
-    toast.loading("⏳ Eliminando flujo y archivos...", { id: workflowId });
+    toast.loading("⏳ Eliminando disparador y archivos...", { id: workflowId });
     deleteMutation.mutate();
   };
 
@@ -75,7 +75,7 @@ function DeleteWorkflowDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
           <AlertDialogDescription>
-            Esta acción eliminará <strong>todos los nodos y archivos</strong> del flujo. Es irreversible.
+            Esta acción eliminará <strong>todos los nodos y archivos</strong> del disparador. Es irreversible.
           </AlertDialogDescription>
 
           <div className="flex flex-col py-4 gap-2">
@@ -85,7 +85,7 @@ function DeleteWorkflowDialog({
             <Input
               value={confirmText}
               onChange={(e) => setConfirmText(e.target.value)}
-              placeholder="Escribe el nombre del flujo"
+              placeholder="Escribe el nombre del disparador"
               disabled={deleteMutation.isPending}
             />
           </div>

@@ -46,10 +46,10 @@ function CreateWorflowDialog({ triggerText, isPro = false }: { triggerText?: Str
   const { mutate, isPending } = useMutation({
     mutationFn: createWorkflow,
     onSuccess: () => {
-      toast.success("Flujo creado", { id: "create-workflow" });
+      toast.success("Disparador creado", { id: "create-workflow" });
     },
     onError: () => {
-      toast.error("Falló la creación del flujo", { id: "create-workflow" });
+      toast.error("Falló la creación del disparador", { id: "create-workflow" });
     },
   });
 
@@ -65,7 +65,7 @@ function CreateWorflowDialog({ triggerText, isPro = false }: { triggerText?: Str
     if (!raw) return;
 
     if (keywords.length >= MAX_KEYWORDS) {
-      toast.error("Solo puedes agregar hasta 20 palabras clave por flujo");
+      toast.error("Solo puedes agregar hasta 20 palabras clave por disparador");
       return;
     }
 
@@ -119,7 +119,7 @@ function CreateWorflowDialog({ triggerText, isPro = false }: { triggerText?: Str
         description: descriptionJson,
       };
 
-      toast.loading("Creando flujo...", { id: "create-workflow" });
+      toast.loading("Creando disparador...", { id: "create-workflow" });
       mutate(payload);
     },
     [mutate, matchType, keywords, isPro]
@@ -134,10 +134,10 @@ function CreateWorflowDialog({ triggerText, isPro = false }: { triggerText?: Str
       }}
     >
       <DialogTrigger asChild>
-        <Button>{triggerText ?? "CREAR FLUJO"}</Button>
+        <Button>{triggerText ?? "CREAR DISPARADOR"}</Button>
       </DialogTrigger>
       <DialogContent className="px-0">
-        <CustomDialogHeader icon={Layers2Icon} title="CREAR FLUJO" />
+        <CustomDialogHeader icon={Layers2Icon} title="CREAR DISPARADOR" />
         <div className="p-6">
           <Form {...form}>
             <form
@@ -157,7 +157,7 @@ function CreateWorflowDialog({ triggerText, isPro = false }: { triggerText?: Str
                       <Input {...field} />
                     </FormControl>
                     <FormDescription>
-                      Escribe un nombre único para el flujo.
+                      Escribe un nombre único para el disparador.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -268,7 +268,7 @@ function CreateWorflowDialog({ triggerText, isPro = false }: { triggerText?: Str
                       </div>
                     </FormControl>
                     <FormDescription className="text-xs" >
-                      Estas palabras activarán el flujo según el tipo de
+                      Estas palabras activarán el disparador según el tipo de
                       coincidencia seleccionado. Máx. 20.
                     </FormDescription>
                     <FormMessage />

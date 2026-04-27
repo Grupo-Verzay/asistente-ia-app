@@ -81,7 +81,7 @@ export const CreateNodeComponent = ({ workflowId, plan, totalNodes, seguimientoN
             //  Validación UI (no reemplaza backend; solo mejora UX)
             if (totalNodes >= MAX_NODES_PER_WORKFLOW) {
                 toast.error(
-                    `Este flujo ya alcanzó el límite de ${MAX_NODES_PER_WORKFLOW} nodos. Elimina un nodo existente para poder agregar uno nuevo.`,
+                    `Este disparador ya alcanzó el límite de ${MAX_NODES_PER_WORKFLOW} nodos. Elimina un nodo existente para poder agregar uno nuevo.`,
                     { id: "create-node" }
                 );
                 return;
@@ -91,7 +91,7 @@ export const CreateNodeComponent = ({ workflowId, plan, totalNodes, seguimientoN
 
             if (isSeguimiento && seguimientoNodes >= MAX_SEGUIMIENTOS_PER_WORKFLOW) {
                 toast.error(
-                    `Este flujo ya tiene el máximo de ${MAX_SEGUIMIENTOS_PER_WORKFLOW} nodos de seguimiento permitidos para evitar spam.`,
+                    `Este disparador ya tiene el máximo de ${MAX_SEGUIMIENTOS_PER_WORKFLOW} nodos de seguimiento permitidos para evitar spam.`,
                     { id: "create-node" }
                 );
                 return;

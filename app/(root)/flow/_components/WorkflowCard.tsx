@@ -99,7 +99,7 @@ export const WorkflowCard = ({
         if (!raw) return;
 
         if (keywords.length >= MAX_KEYWORDS) {
-            toast.error("Solo puedes agregar hasta 20 palabras clave por flujo");
+            toast.error("Solo puedes agregar hasta 20 palabras clave por disparador");
             return;
         }
 
@@ -185,10 +185,10 @@ export const WorkflowCard = ({
                 toast.error(res.message, { id: toastId });
                 form.reset(); // restaurar valores anteriores
             } else {
-                toast.success("Flujo actualizado correctamente", { id: toastId });
+                toast.success("Disparador actualizado correctamente", { id: toastId });
             }
         } catch {
-            toast.error("Error al actualizar el flujo", { id: toastId });
+            toast.error("Error al actualizar el disparador", { id: toastId });
             form.reset();
         } finally {
             setLoading(false);
@@ -234,7 +234,7 @@ export const WorkflowCard = ({
                                                 <FormControl>
                                                     <Input
                                                         {...field}
-                                                        placeholder="Nombre del flujo"
+                                                        placeholder="Nombre del disparador"
                                                         className="text-base uppercase font-semibold"
                                                         disabled={loading}
                                                         onKeyDown={handleKeyDown}
@@ -308,7 +308,7 @@ export const WorkflowCard = ({
                                                             {keywords.length === 0 && (
                                                                 <p className="text-[11px] text-muted-foreground">
                                                                     Agrega una o varias palabras/frases que
-                                                                    disparen este flujo.
+                                                                    disparen este disparador.
                                                                 </p>
                                                             )}
                                                         </div>
